@@ -32,7 +32,8 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, async () => {
   console.log(`Servidor escuchando en el puerto ${PORT}`);
   try {
-    await db.sequelize.sync({ force: false });
+    // alter: true sincroniza la estructura y agrega las columnas/foreign keys faltantes en Neon PostgreSQL
+    await db.sequelize.sync({ alter: true });
     console.log("Base de datos sincronizada correctamente con Neon PostgreSQL.");
   } catch (err) {
     console.error("Error al sincronizar con PostgreSQL:", err.message);
