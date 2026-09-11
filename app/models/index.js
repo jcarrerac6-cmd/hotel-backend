@@ -34,26 +34,33 @@ db.invoice = require("./invoice.model.js")(sequelize, Sequelize);
 db.invoiceDetail = require("./invoiceDetail.model.js")(sequelize, Sequelize);
 db.payment = require("./payment.model.js")(sequelize, Sequelize);
 
-// RELACIONES DEFINIDAS EXPLÍCITAMENTE
-db.client.hasMany(db.booking, { foreignKey: { name: 'clientId', field: 'clientId' } });
-db.booking.belongsTo(db.client, { foreignKey: { name: 'clientId', field: 'clientId' } });
+// RELACIONES DEFINIDAS EXPLÍCITAMENTE CON MAPEO DE CLAVE Y CAMPO
+// Cliente -> Reservas
+db.client.hasMany(db.booking, { foreignKey: 'clientId', sourceKey: 'id' });
+db.booking.belongsTo(db.client, { foreignKey: 'clientId', targetKey: 'id' });
 
-db.room.hasMany(db.booking, { foreignKey: { name: 'roomId', field: 'roomId' } });
-db.booking.belongsTo(db.room, { foreignKey: { name: 'roomId', field: 'roomId' } });
+// Habitación -> Reservas
+db.room.hasMany(db.booking, { foreignKey: 'roomId', sourceKey: 'id' });
+db.booking.belongsTo(db.room, { foreignKey: 'roomId', targetKey: 'id' });
 
-db.booking.hasOne(db.invoice, { foreignKey: { name: 'bookingId', field: 'bookingId' } });
-db.invoice.belongsTo(db.booking, { foreignKey: { name: 'bookingId', field: 'bookingId' } });
+// Reserva -> Factura
+db.booking.hasOne(db.invoice, { foreignKey: 'bookingId', sourceKey: 'id' });
+db.invoice.belongsTo(db.booking, { foreignKey: 'bookingId', targetKey: 'id' });
 
-db.client.hasMany(db.invoice, { foreignKey: { name: 'clientId', field: 'clientId' } });
-db.invoice.belongsTo(db.client, { foreignKey: { name: 'clientId', field: 'clientId' } });
+// Cliente -> Factura
+db.client.hasMany(db.invoice, { foreignKey: 'clientId', sourceKey: 'id' });
+db.invoice.belongsTo(db.client, { foreignKey: 'clientId', targetKey: 'id' });
 
-db.invoice.hasMany(db.invoiceDetail, { foreignKey: { name: 'invoiceId', field: 'invoiceId' } });
-db.invoiceDetail.belongsTo(db.invoice, { foreignKey: { name: 'invoiceId', field: 'invoiceId' } });
+// Factura -> Detalle de Factura
+db.invoice.hasMany(db.invoiceDetail, { foreignKey: 'invoiceId', sourceKey: 'id' });
+db.invoiceDetail.belongsTo(db.invoice, { foreignKey: 'invoiceId', targetKey: 'id' });
 
-db.additionalService.hasMany(db.invoiceDetail, { foreignKey: { name: 'serviceId', field: 'serviceId' } });
-db.invoiceDetail.belongsTo(db.additionalService, { foreignKey: { name: 'serviceId', field: 'serviceId' } });
+// Servicio Adicional -> Detalle de Factura
+db.additionalService.hasMany(db.invoiceDetail, { foreignKey: 'serviceId', sourceKey: 'id' });
+db.invoiceDetail.belongsTo(db.additionalService, { foreignKey: 'serviceId', targetKey: 'id' });
 
-db.invoice.hasOne(db.payment, { foreignKey: { name: 'invoiceId', field: 'invoiceId' } });
-db.payment.belongsTo(db.invoice, { foreignKey: { name: 'invoiceId', field: 'invoiceId' } });
+// Factura -> Pago
+db.invoice.hasOne(db.payment, { foreignKey: 'invoiceId', sourceKey: 'id' });
+db.payment.belongsTo(db.invoice, { foreignKey: 'invoiceId', targetKey: 'id' });
 
 module.exports = db;

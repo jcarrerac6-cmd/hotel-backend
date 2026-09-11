@@ -10,7 +10,16 @@ exports.create = async (req, res) => {
     if (!fechaEntrada || !fechaSalida || !clientId || !roomId) {
       return res.status(400).send({ message: "Fechas, clientId y roomId son requeridos." });
     }
-    const booking = await Booking.create({ fechaEntrada, fechaSalida, estado, clientId, roomId });
+    
+    // Casteo explicito de IDs a numeros enteros
+    const booking = await Booking.create({ 
+      fechaEntrada, 
+      fechaSalida, 
+      estado: estado || "activa", 
+      clientId: parseInt(clientId, 10), 
+      roomId: parseInt(roomId, 10) 
+    });
+
     res.status(201).send(booking);
   } catch (error) {
     res.status(500).send({ message: error.message || "Error al crear la reserva." });

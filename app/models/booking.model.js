@@ -27,6 +27,9 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: false,
       field: "roomId"
     }
+  }, {
+    timestamps: true,
+    freezeTableName: true
   });
 
   return Booking;
