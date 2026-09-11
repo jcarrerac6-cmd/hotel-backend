@@ -1,5 +1,10 @@
-const controller = require("../controllers/invoice.controller");
+module.exports = app => {
+  const invoices = require("../controllers/invoice.controller.js");
+  var router = require("express").Router();
 
-module.exports = function(app) {
-  app.post("/api/invoices", controller.createInvoice);
+  router.post("/", invoices.create);
+  router.get("/", invoices.findAll);
+  router.get("/:id", invoices.findOne);
+
+  app.use("/api/invoices", router);
 };

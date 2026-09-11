@@ -1,6 +1,8 @@
-const controller = require("../controllers/report.controller");
+module.exports = app => {
+  const reports = require("../controllers/report.controller.js");
+  var router = require("express").Router();
 
-module.exports = function(app) {
-  app.get("/api/reports/occupancy", controller.getOccupancyByDate);
-  app.get("/api/reports/top-services", controller.getTopServices);
+  router.get("/general", reports.getGeneralReport);
+
+  app.use("/api/reports", router);
 };

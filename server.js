@@ -31,11 +31,13 @@ const registerRoute = (path) => {
 registerRoute("./app/routes/client.routes.js");
 registerRoute("./app/routes/employee.routes.js");
 registerRoute("./app/routes/supplier.routes.js");
+registerRoute("./app/routes/room.routes.js");
 registerRoute("./app/routes/additionalService.routes.js");
 registerRoute("./app/routes/booking.routes.js");
 registerRoute("./app/routes/payment.routes.js");
 registerRoute("./app/routes/invoice.routes.js");
 registerRoute("./app/routes/report.routes.js");
+registerRoute("./app/routes/auth.routes.js");
 
 // Sincronización de base de datos e inicio de servidor
 const db = require("./app/models");

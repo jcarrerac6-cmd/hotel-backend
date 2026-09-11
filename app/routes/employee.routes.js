@@ -1,6 +1,12 @@
-const controller = require("../controllers/employee.controller");
+module.exports = app => {
+  const employees = require("../controllers/employee.controller.js");
+  var router = require("express").Router();
 
-module.exports = function(app) {
-  app.post("/api/employees", controller.create);
-  app.get("/api/employees", controller.findAll);
+  router.post("/", employees.create);
+  router.get("/", employees.findAll);
+  router.get("/:id", employees.findOne);
+  router.put("/:id", employees.update);
+  router.delete("/:id", employees.delete);
+
+  app.use("/api/employees", router);
 };
