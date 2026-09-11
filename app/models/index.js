@@ -1,11 +1,11 @@
 const dbConfig = require("../config/db.config.js");
 const Sequelize = require("sequelize");
 
-// Si el proyecto corre en la nube (Render), usará la URL de conexión de Neon.
-// Si corre en tu computadora local, usará las variables locales.
+// Si el proyecto corre en la nube (Render), usará PostgreSQL con la URL de Neon.
+// Si corre localmente, usará la configuración de db.config.js.
 const sequelize = process.env.DATABASE_URL 
   ? new Sequelize(process.env.DATABASE_URL, {
-      dialect: dbConfig.dialect,
+      dialect: "postgres",
       dialectOptions: {
         ssl: {
           require: true,
