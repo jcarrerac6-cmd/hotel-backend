@@ -8,34 +8,45 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Ruta principal para verificar que el servidor esté vivo
+// Ruta principal para comprobar estado del servidor
 app.get("/", (req, res) => {
-  res.json({ message: "API del Sistema de Hotel (UMG) lista." });
+  res.json({ message: "API del Sistema de Hotel (UMG) lista y funcionando." });
 });
 
-// Registrar Rutas
-require("./app/routes/client.routes")(app);
-require("./app/routes/employee.routes")(app);
-require("./app/routes/supplier.routes")(app);
-require("./app/routes/additionalService.routes")(app);
-require("./app/routes/booking.routes")(app);
-require("./app/routes/payment.routes")(app);
-require("./app/routes/invoice.routes")(app);
-require("./app/routes/report.routes")(app);
+// Función para registrar rutas de forma segura
+const registerRoute = (path) => {
+  try {
+    const route = require(path);
+    if (typeof route === "function") {
+      route(app);
+    } else {
+      console.warn(`Aviso: La ruta ${path} exporta un router en lugar de una función.`);
+    }
+  } catch (err) {
+    console.error(`Error cargando la ruta ${path}:`, err.message);
+  }
+};
 
-// Sincronización de Base de Datos e inicio de servidor
+// Carga de todas las rutas del sistema
+registerRoute("./app/routes/client.routes.js");
+registerRoute("./app/routes/employee.routes.js");
+registerRoute("./app/routes/supplier.routes.js");
+registerRoute("./app/routes/additionalService.routes.js");
+registerRoute("./app/routes/booking.routes.js");
+registerRoute("./app/routes/payment.routes.js");
+registerRoute("./app/routes/invoice.routes.js");
+registerRoute("./app/routes/report.routes.js");
+
+// Sincronización de base de datos e inicio de servidor
 const db = require("./app/models");
-
 const PORT = process.env.PORT || 8080;
 
-// Levantar primero el puerto HTTP para que Render no aborte el servicio
 app.listen(PORT, async () => {
-  console.log(`Servidor iniciado y escuchando en el puerto ${PORT}`);
-  
+  console.log(`Servidor escuchando en el puerto ${PORT}`);
   try {
     await db.sequelize.sync({ force: false });
     console.log("Base de datos sincronizada correctamente con Neon PostgreSQL.");
   } catch (err) {
-    console.error("Error de conexión/sincronización con la base de datos:", err.message);
+    console.error("Error al sincronizar con PostgreSQL:", err.message);
   }
 });
