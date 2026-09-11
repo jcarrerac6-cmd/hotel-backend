@@ -16,6 +16,22 @@ module.exports = (sequelize, Sequelize) => {
     estado: {
       type: Sequelize.STRING,
       defaultValue: "activa"
+    },
+    clientId: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      references: {
+        model: "clients",
+        key: "id"
+      }
+    },
+    roomId: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      references: {
+        model: "rooms",
+        key: "id"
+      }
     }
   });
 
