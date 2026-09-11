@@ -20,18 +20,12 @@ module.exports = (sequelize, Sequelize) => {
     clientId: {
       type: Sequelize.INTEGER,
       allowNull: false,
-      references: {
-        model: "clients",
-        key: "id"
-      }
+      field: "clientId"
     },
     roomId: {
       type: Sequelize.INTEGER,
       allowNull: false,
-      references: {
-        model: "rooms",
-        key: "id"
-      }
+      field: "roomId"
     }
   });
 
