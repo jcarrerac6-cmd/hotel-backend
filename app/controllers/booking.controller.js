@@ -6,20 +6,20 @@ const Room = db.room;
 // Crear una nueva reserva
 exports.create = async (req, res) => {
   try {
-    const { fecha_entrada, fecha_salida, estado, client_id, room_id } = req.body;
+    const { fechaEntrada, fechaSalida, estado, clientId, roomId } = req.body;
 
-    if (!fecha_entrada || !fecha_salida || !client_id || !room_id) {
+    if (!fechaEntrada || !fechaSalida || !clientId || !roomId) {
       return res.status(400).send({ 
-        message: "Campos requeridos: fecha_entrada, fecha_salida, client_id, room_id." 
+        message: "Campos requeridos: fechaEntrada, fechaSalida, clientId, roomId." 
       });
     }
 
     const booking = await Booking.create({
-      fecha_entrada,
-      fecha_salida,
+      fechaEntrada,
+      fechaSalida,
       estado: estado || "activa",
-      client_id: parseInt(client_id, 10),
-      room_id: parseInt(room_id, 10)
+      clientId: parseInt(clientId, 10),
+      roomId: parseInt(roomId, 10)
     });
 
     res.status(201).send(booking);
