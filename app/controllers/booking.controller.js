@@ -6,19 +6,20 @@ const Room = db.room;
 // Crear una nueva reserva
 exports.create = async (req, res) => {
   try {
-    const { fechaEntrada, fechaSalida, estado, clientId, roomId } = req.body;
+    const { fecha_entrada, fecha_salida, estado, client_id, room_id } = req.body;
 
-    if (!fechaEntrada || !fechaSalida || !clientId || !roomId) {
-      return res.status(400).send({ message: "Fechas, clientId y roomId son requeridos." });
+    if (!fecha_entrada || !fecha_salida || !client_id || !room_id) {
+      return res.status(400).send({ 
+        message: "Campos requeridos: fecha_entrada, fecha_salida, client_id, room_id." 
+      });
     }
 
-    // Creación indicando explícitamente los campos en camelCase
-    const booking = await Booking.create({ 
-      fechaEntrada, 
-      fechaSalida, 
-      estado: estado || "activa", 
-      clientId: parseInt(clientId, 10), 
-      roomId: parseInt(roomId, 10) 
+    const booking = await Booking.create({
+      fecha_entrada,
+      fecha_salida,
+      estado: estado || "activa",
+      client_id: parseInt(client_id, 10),
+      room_id: parseInt(room_id, 10)
     });
 
     res.status(201).send(booking);
@@ -32,14 +33,8 @@ exports.findAll = async (req, res) => {
   try {
     const bookings = await Booking.findAll({
       include: [
-        { 
-          model: Client, 
-          attributes: ["id", "nombre", "email"] 
-        },
-        { 
-          model: Room, 
-          attributes: ["id", "numero", "tipo", "precio"] 
-        }
+        { model: Client, attributes: ["id", "nombre", "email"] },
+        { model: Room, attributes: ["id", "numero", "tipo", "precio"] }
       ]
     });
     res.send(bookings);
@@ -54,14 +49,8 @@ exports.findOne = async (req, res) => {
     const id = req.params.id;
     const booking = await Booking.findByPk(id, {
       include: [
-        { 
-          model: Client, 
-          attributes: ["id", "nombre", "email"] 
-        },
-        { 
-          model: Room, 
-          attributes: ["id", "numero", "tipo", "precio"] 
-        }
+        { model: Client, attributes: ["id", "nombre", "email"] },
+        { model: Room, attributes: ["id", "numero", "tipo", "precio"] }
       ]
     });
     if (!booking) {

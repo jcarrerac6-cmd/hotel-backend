@@ -23,7 +23,7 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-// Cargar modelos
+// Cargar todos los modelos
 db.client = require("./client.model.js")(sequelize, Sequelize);
 db.employee = require("./employee.model.js")(sequelize, Sequelize);
 db.supplier = require("./supplier.model.js")(sequelize, Sequelize);
@@ -34,7 +34,7 @@ db.invoice = require("./invoice.model.js")(sequelize, Sequelize);
 db.invoiceDetail = require("./invoiceDetail.model.js")(sequelize, Sequelize);
 db.payment = require("./payment.model.js")(sequelize, Sequelize);
 
-// RELACIONES CON LLAVES FORÁNEAS EN SNAKE_CASE
+// RELACIONES DIRECTAS (SNAKE_CASE)
 db.client.hasMany(db.booking, { foreignKey: 'client_id' });
 db.booking.belongsTo(db.client, { foreignKey: 'client_id' });
 
