@@ -10,8 +10,8 @@ exports.create = async (req, res) => {
     if (!fechaEntrada || !fechaSalida || !clientId || !roomId) {
       return res.status(400).send({ message: "Fechas, clientId y roomId son requeridos." });
     }
-    
-    // Casteo explicito de IDs a numeros enteros
+
+    // Creación con casteo explícito de IDs
     const booking = await Booking.create({ 
       fechaEntrada, 
       fechaSalida, 
@@ -31,8 +31,8 @@ exports.findAll = async (req, res) => {
   try {
     const bookings = await Booking.findAll({
       include: [
-        { model: Client, attributes: ["id", "nombre", "email"] },
-        { model: Room, attributes: ["id", "numero", "tipo", "precio"] }
+        { model: db.client, attributes: ["id", "nombre", "email"] },
+        { model: db.room, attributes: ["id", "numero", "tipo", "precio"] }
       ]
     });
     res.send(bookings);
@@ -47,8 +47,8 @@ exports.findOne = async (req, res) => {
     const id = req.params.id;
     const booking = await Booking.findByPk(id, {
       include: [
-        { model: Client, attributes: ["id", "nombre", "email"] },
-        { model: Room, attributes: ["id", "numero", "tipo", "precio"] }
+        { model: db.client, attributes: ["id", "nombre", "email"] },
+        { model: db.room, attributes: ["id", "numero", "tipo", "precio"] }
       ]
     });
     if (!booking) {
