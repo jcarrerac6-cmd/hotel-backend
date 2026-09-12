@@ -3,7 +3,7 @@ const Booking = db.booking;
 const Client = db.client;
 const Room = db.room;
 
-// Crear una nueva reserva
+// Crear reserva
 exports.create = async (req, res) => {
   try {
     const { fechaEntrada, fechaSalida, estado, clientId, roomId } = req.body;

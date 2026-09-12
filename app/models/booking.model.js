@@ -7,19 +7,31 @@ module.exports = (sequelize, Sequelize) => {
     },
     fechaEntrada: {
       type: Sequelize.DATEONLY,
-      allowNull: false
+      allowNull: false,
+      field: "fechaEntrada"
     },
     fechaSalida: {
       type: Sequelize.DATEONLY,
-      allowNull: false
+      allowNull: false,
+      field: "fechaSalida"
     },
     estado: {
       type: Sequelize.STRING,
       defaultValue: "activa"
+    },
+    clientId: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      field: "clientId"
+    },
+    roomId: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      field: "roomId"
     }
   }, {
     tableName: "bookings",
-    underscored: true // TRADUCE AUTOMÁTICAMENTE clientId -> client_id EN POSTGRES
+    timestamps: true
   });
 
   return Booking;
