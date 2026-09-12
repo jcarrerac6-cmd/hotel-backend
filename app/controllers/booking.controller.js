@@ -7,11 +7,12 @@ const Room = db.room;
 exports.create = async (req, res) => {
   try {
     const { fechaEntrada, fechaSalida, estado, clientId, roomId } = req.body;
+
     if (!fechaEntrada || !fechaSalida || !clientId || !roomId) {
       return res.status(400).send({ message: "Fechas, clientId y roomId son requeridos." });
     }
 
-    // Creación con casteo explícito de IDs
+    // Creación indicando explícitamente los campos en camelCase
     const booking = await Booking.create({ 
       fechaEntrada, 
       fechaSalida, 
@@ -31,8 +32,14 @@ exports.findAll = async (req, res) => {
   try {
     const bookings = await Booking.findAll({
       include: [
-        { model: db.client, attributes: ["id", "nombre", "email"] },
-        { model: db.room, attributes: ["id", "numero", "tipo", "precio"] }
+        { 
+          model: Client, 
+          attributes: ["id", "nombre", "email"] 
+        },
+        { 
+          model: Room, 
+          attributes: ["id", "numero", "tipo", "precio"] 
+        }
       ]
     });
     res.send(bookings);
@@ -47,8 +54,14 @@ exports.findOne = async (req, res) => {
     const id = req.params.id;
     const booking = await Booking.findByPk(id, {
       include: [
-        { model: db.client, attributes: ["id", "nombre", "email"] },
-        { model: db.room, attributes: ["id", "numero", "tipo", "precio"] }
+        { 
+          model: Client, 
+          attributes: ["id", "nombre", "email"] 
+        },
+        { 
+          model: Room, 
+          attributes: ["id", "numero", "tipo", "precio"] 
+        }
       ]
     });
     if (!booking) {
