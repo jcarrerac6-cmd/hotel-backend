@@ -36,12 +36,12 @@ db.payment = require("./payment.model.js")(sequelize, Sequelize);
 
 // RELACIONES DEFINIDAS EXPLÍCITAMENTE CON MAPEO DE CAMPO
 // Cliente -> Reservas
-db.client.hasMany(db.booking, { foreignKey: { name: 'clientId', field: 'clientId' } });
-db.booking.belongsTo(db.client, { foreignKey: { name: 'clientId', field: 'clientId' } });
+db.client.hasMany(db.booking, { foreignKey: 'client_id' });
+db.booking.belongsTo(db.client, { foreignKey: 'client_id' });
 
 // Habitación -> Reservas
-db.room.hasMany(db.booking, { foreignKey: { name: 'roomId', field: 'roomId' } });
-db.booking.belongsTo(db.room, { foreignKey: { name: 'roomId', field: 'roomId' } });
+db.room.hasMany(db.booking, { foreignKey: 'room_id' });
+db.booking.belongsTo(db.room, { foreignKey: 'room_id' });
 
 // Reserva -> Factura
 db.booking.hasOne(db.invoice, { foreignKey: { name: 'bookingId', field: 'bookingId' } });

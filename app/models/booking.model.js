@@ -20,15 +20,16 @@ module.exports = (sequelize, Sequelize) => {
     clientId: {
       type: Sequelize.INTEGER,
       allowNull: false,
-      field: "clientId"
+      field: "client_id"
     },
     roomId: {
       type: Sequelize.INTEGER,
       allowNull: false,
-      field: "roomId"
+      field: "room_id"
     }
   }, {
-    tableName: "bookings"
+    tableName: "bookings",
+    underscored: true
   });
 
   return Booking;
