@@ -16,17 +16,10 @@ module.exports = (sequelize, Sequelize) => {
     estado: {
       type: Sequelize.STRING,
       defaultValue: "activa"
-    },
-    clientId: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-      field: 'clientId'
-    },
-    roomId: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-      field: 'roomId'
     }
+  }, {
+    tableName: "bookings",
+    underscored: true // TRADUCE AUTOMÁTICAMENTE clientId -> client_id EN POSTGRES
   });
 
   return Booking;
