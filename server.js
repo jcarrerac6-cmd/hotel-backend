@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
   res.json({ message: "API del Sistema de Hotel (UMG) lista y funcionando." });
 });
 
-// Carga de rutas
+// Carga directa de rutas
 require("./app/routes/client.routes.js")(app);
 require("./app/routes/employee.routes.js")(app);
 require("./app/routes/supplier.routes.js")(app);
@@ -30,13 +30,13 @@ const PORT = process.env.PORT || 8080;
 
 async function resetAndStart() {
   try {
-    // Purga total de esquema en Neon DB
+    // Destruir completamente el esquema de la base de datos
     await db.sequelize.query('DROP SCHEMA public CASCADE;');
     await db.sequelize.query('CREATE SCHEMA public;');
     
-    // Recreación limpia de todas las tablas
+    // Recrear todas las tablas en limpio con nombres camelCase
     await db.sequelize.sync({ force: true });
-    console.log("¡ESQUEMA PURGADO Y RECREADO CORRECTAMENTE EN CAMELCASE!");
+    console.log("¡BASE DE DATOS RECREADA EN LIMPIO EN CAMELCASE!");
 
     app.listen(PORT, () => {
       console.log(`Servidor corriendo en el puerto ${PORT}`);

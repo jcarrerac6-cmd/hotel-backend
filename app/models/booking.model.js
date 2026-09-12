@@ -19,17 +19,15 @@ module.exports = (sequelize, Sequelize) => {
     },
     clientId: {
       type: Sequelize.INTEGER,
-      allowNull: false,
-      field: "client_id"
+      allowNull: false
     },
     roomId: {
       type: Sequelize.INTEGER,
-      allowNull: false,
-      field: "room_id"
+      allowNull: false
     }
   }, {
     tableName: "bookings",
-    underscored: true
+    underscored: false // Forzamos camelCase
   });
 
   return Booking;
