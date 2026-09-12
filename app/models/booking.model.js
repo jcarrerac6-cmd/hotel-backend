@@ -19,17 +19,14 @@ module.exports = (sequelize, Sequelize) => {
     },
     clientId: {
       type: Sequelize.INTEGER,
-      allowNull: false,
-      field: "clientId"
+      allowNull: false
     },
     roomId: {
       type: Sequelize.INTEGER,
-      allowNull: false,
-      field: "roomId"
+      allowNull: false
     }
   }, {
-    timestamps: true,
-    freezeTableName: true
+    tableName: "bookings"
   });
 
   return Booking;
