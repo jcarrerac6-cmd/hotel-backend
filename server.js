@@ -28,16 +28,12 @@ require("./app/routes/auth.routes.js")(app);
 const db = require("./app/models");
 const PORT = process.env.PORT || 8080;
 
-// FORZAR PURGE DE ESQUEMA EN NEON DB Y RECREACIÓN TOTAL
-db.sequelize.query('DROP SCHEMA public CASCADE;')
-  .then(() => db.sequelize.query('CREATE SCHEMA public;'))
-  .then(() => db.sequelize.sync({ force: true }))
-  .then(() => {
-    console.log("¡BASE DE DATOS PURGADA Y RECREADA DESDE CERO!");
-    app.listen(PORT, () => {
-      console.log(`Servidor listo en el puerto ${PORT}`);
-    });
-  })
-  .catch((err) => {
-    console.error("Error al recrear esquema en PostgreSQL:", err.message);
+// FORZAR RECREACIÓN DE TABLAS (ALTER / FORCE)
+db.sequelize.sync({ alter: true }).then(() => {
+  console.log("¡Tablas alteradas y estructuradas correctamente en PostgreSQL!");
+  app.listen(PORT, () => {
+    console.log(`Servidor listo en el puerto ${PORT}`);
   });
+}).catch((err) => {
+  console.error("Error al sincronizar con PostgreSQL:", err.message);
+});
