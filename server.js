@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
   res.json({ message: "API del Sistema de Hotel (UMG) lista y funcionando." });
 });
 
-// Carga directa de rutas
+// Rutas
 require("./app/routes/client.routes.js")(app);
 require("./app/routes/employee.routes.js")(app);
 require("./app/routes/supplier.routes.js")(app);
@@ -28,22 +28,22 @@ require("./app/routes/auth.routes.js")(app);
 const db = require("./app/models");
 const PORT = process.env.PORT || 8080;
 
-async function resetAndStart() {
+async function resetDatabase() {
   try {
-    // Destruir completamente el esquema de la base de datos
+    // 1. Borrar todas las tablas a la fuerza
     await db.sequelize.query('DROP SCHEMA public CASCADE;');
     await db.sequelize.query('CREATE SCHEMA public;');
     
-    // Recrear todas las tablas en limpio con nombres camelCase
+    // 2. Recrear todo desde cero con las columnas mapeadas
     await db.sequelize.sync({ force: true });
-    console.log("¡BASE DE DATOS RECREADA EN LIMPIO EN CAMELCASE!");
+    console.log("¡BASE DE DATOS ELIMINADA Y RECREADA CORRECTAMENTE!");
 
     app.listen(PORT, () => {
       console.log(`Servidor corriendo en el puerto ${PORT}`);
     });
   } catch (err) {
-    console.error("Error al iniciar el servidor:", err.message);
+    console.error("Error al recrear base de datos:", err);
   }
 }
 
-resetAndStart();
+resetDatabase();
