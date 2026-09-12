@@ -5,14 +5,24 @@ module.exports = (sequelize, Sequelize) => {
       primaryKey: true,
       autoIncrement: true
     },
+    total: {
+      type: Sequelize.DECIMAL(10, 2),
+      defaultValue: 0.00
+    },
     fecha: {
       type: Sequelize.DATE,
       defaultValue: Sequelize.NOW
     },
-    total: {
-      type: Sequelize.DECIMAL(10, 2),
-      defaultValue: 0.00
+    clientId: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
+    bookingId: {
+      type: Sequelize.INTEGER,
+      allowNull: false
     }
+  }, {
+    tableName: "invoices"
   });
 
   return Invoice;
