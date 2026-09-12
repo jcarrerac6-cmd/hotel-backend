@@ -28,12 +28,27 @@ require("./app/routes/auth.routes.js")(app);
 const db = require("./app/models");
 const PORT = process.env.PORT || 8080;
 
-// FORZAR RECREACIÓN DE TABLAS (ALTER / FORCE)
-db.sequelize.sync({ alter: true }).then(() => {
-  console.log("¡Tablas alteradas y estructuradas correctamente en PostgreSQL!");
-  app.listen(PORT, () => {
-    console.log(`Servidor listo en el puerto ${PORT}`);
-  });
-}).catch((err) => {
-  console.error("Error al sincronizar con PostgreSQL:", err.message);
-});
+// ELIMINAR TABLAS CONFLICTIVAS VÍA SQL DIRECTO Y RECREAR
+async function startServer() {
+  try {
+    // Destruye completamente las tablas que causan conflicto
+    await db.sequelize.query('DROP TABLE IF EXISTS "payments" CASCADE;');
+    await db.sequelize.query('DROP TABLE IF EXISTS "invoice_details" CASCADE;');
+    await db.sequelize.query('DROP TABLE IF EXISTS "invoiceDetails" CASCADE;');
+    await db.sequelize.query('DROP TABLE IF EXISTS "invoices" CASCADE;');
+    await db.sequelize.query('DROP TABLE IF EXISTS "bookings" CASCADE;');
+    
+    // Sincroniza y crea el esquema limpio coincidente con los modelos actuales
+    await db.sequelize.sync({ force: true });
+    
+    console.log("¡TABLAS DESTRUIDAS Y RECREADAS CON ÉXITO!");
+    
+    app.listen(PORT, () => {
+      console.log(`Servidor listo en el puerto ${PORT}`);
+    });
+  } catch (err) {
+    console.error("Error al recrear la base de datos:", err);
+  }
+}
+
+startServer();
