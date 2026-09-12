@@ -15,11 +15,13 @@ module.exports = (sequelize, Sequelize) => {
     },
     clientId: {
       type: Sequelize.INTEGER,
-      allowNull: false
+      allowNull: false,
+      field: "clientId"
     },
     bookingId: {
       type: Sequelize.INTEGER,
-      allowNull: false
+      allowNull: false,
+      field: "bookingId"
     }
   }, {
     tableName: "invoices"
