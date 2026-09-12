@@ -10,17 +10,11 @@ const sequelize = process.env.DATABASE_URL
           rejectUnauthorized: false
         }
       },
-      define: {
-        underscored: true // Traduce automáticamente clientId -> client_id en PostgreSQL
-      },
       pool: dbConfig.pool
     })
   : new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
       host: dbConfig.HOST,
       dialect: dbConfig.dialect,
-      define: {
-        underscored: true
-      },
       pool: dbConfig.pool
     });
 
@@ -40,26 +34,26 @@ db.invoice = require("./invoice.model.js")(sequelize, Sequelize);
 db.invoiceDetail = require("./invoiceDetail.model.js")(sequelize, Sequelize);
 db.payment = require("./payment.model.js")(sequelize, Sequelize);
 
-// RELACIONES (Sequelize asigna las llaves foráneas automáticas alineadas con PostgreSQL)
-db.client.hasMany(db.booking);
-db.booking.belongsTo(db.client);
+// RELACIONES DIRECTAS
+db.client.hasMany(db.booking, { foreignKey: 'clientId' });
+db.booking.belongsTo(db.client, { foreignKey: 'clientId' });
 
-db.room.hasMany(db.booking);
-db.booking.belongsTo(db.room);
+db.room.hasMany(db.booking, { foreignKey: 'roomId' });
+db.booking.belongsTo(db.room, { foreignKey: 'roomId' });
 
-db.booking.hasOne(db.invoice);
-db.invoice.belongsTo(db.booking);
+db.booking.hasOne(db.invoice, { foreignKey: 'bookingId' });
+db.invoice.belongsTo(db.booking, { foreignKey: 'bookingId' });
 
-db.client.hasMany(db.invoice);
-db.invoice.belongsTo(db.client);
+db.client.hasMany(db.invoice, { foreignKey: 'clientId' });
+db.invoice.belongsTo(db.client, { foreignKey: 'clientId' });
 
-db.invoice.hasMany(db.invoiceDetail);
-db.invoiceDetail.belongsTo(db.invoice);
+db.invoice.hasMany(db.invoiceDetail, { foreignKey: 'invoiceId' });
+db.invoiceDetail.belongsTo(db.invoice, { foreignKey: 'invoiceId' });
 
-db.additionalService.hasMany(db.invoiceDetail);
-db.invoiceDetail.belongsTo(db.additionalService);
+db.additionalService.hasMany(db.invoiceDetail, { foreignKey: 'serviceId' });
+db.invoiceDetail.belongsTo(db.additionalService, { foreignKey: 'serviceId' });
 
-db.invoice.hasOne(db.payment);
-db.payment.belongsTo(db.invoice);
+db.invoice.hasOne(db.payment, { foreignKey: 'paymentId' });
+db.payment.belongsTo(db.invoice, { foreignKey: 'paymentId' });
 
 module.exports = db;
