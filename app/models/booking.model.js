@@ -5,11 +5,11 @@ module.exports = (sequelize, Sequelize) => {
       primaryKey: true,
       autoIncrement: true
     },
-    fecha_entrada: {
+    fechaEntrada: {
       type: Sequelize.DATEONLY,
       allowNull: false
     },
-    fecha_salida: {
+    fechaSalida: {
       type: Sequelize.DATEONLY,
       allowNull: false
     },
@@ -17,16 +17,14 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
       defaultValue: "activa"
     },
-    client_id: {
+    clientId: {
       type: Sequelize.INTEGER,
       allowNull: false
     },
-    room_id: {
+    roomId: {
       type: Sequelize.INTEGER,
       allowNull: false
     }
-  }, {
-    tableName: "bookings"
   });
 
   return Booking;

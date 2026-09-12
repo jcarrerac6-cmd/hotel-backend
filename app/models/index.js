@@ -34,26 +34,26 @@ db.invoice = require("./invoice.model.js")(sequelize, Sequelize);
 db.invoiceDetail = require("./invoiceDetail.model.js")(sequelize, Sequelize);
 db.payment = require("./payment.model.js")(sequelize, Sequelize);
 
-// RELACIONES DIRECTAS (SNAKE_CASE)
-db.client.hasMany(db.booking, { foreignKey: 'client_id' });
-db.booking.belongsTo(db.client, { foreignKey: 'client_id' });
+// RELACIONES DIRECTAS (CAMELCASE UNIFICADO)
+db.client.hasMany(db.booking, { foreignKey: 'clientId' });
+db.booking.belongsTo(db.client, { foreignKey: 'clientId' });
 
-db.room.hasMany(db.booking, { foreignKey: 'room_id' });
-db.booking.belongsTo(db.room, { foreignKey: 'room_id' });
+db.room.hasMany(db.booking, { foreignKey: 'roomId' });
+db.booking.belongsTo(db.room, { foreignKey: 'roomId' });
 
-db.booking.hasOne(db.invoice, { foreignKey: 'booking_id' });
-db.invoice.belongsTo(db.booking, { foreignKey: 'booking_id' });
+db.booking.hasOne(db.invoice, { foreignKey: 'bookingId' });
+db.invoice.belongsTo(db.booking, { foreignKey: 'bookingId' });
 
-db.client.hasMany(db.invoice, { foreignKey: 'client_id' });
-db.invoice.belongsTo(db.client, { foreignKey: 'client_id' });
+db.client.hasMany(db.invoice, { foreignKey: 'clientId' });
+db.invoice.belongsTo(db.client, { foreignKey: 'clientId' });
 
-db.invoice.hasMany(db.invoiceDetail, { foreignKey: 'invoice_id' });
-db.invoiceDetail.belongsTo(db.invoice, { foreignKey: 'invoice_id' });
+db.invoice.hasMany(db.invoiceDetail, { foreignKey: 'invoiceId' });
+db.invoiceDetail.belongsTo(db.invoice, { foreignKey: 'invoiceId' });
 
-db.additionalService.hasMany(db.invoiceDetail, { foreignKey: 'service_id' });
-db.invoiceDetail.belongsTo(db.additionalService, { foreignKey: 'service_id' });
+db.additionalService.hasMany(db.invoiceDetail, { foreignKey: 'serviceId' });
+db.invoiceDetail.belongsTo(db.additionalService, { foreignKey: 'serviceId' });
 
-db.invoice.hasOne(db.payment, { foreignKey: 'invoice_id' });
-db.payment.belongsTo(db.invoice, { foreignKey: 'invoice_id' });
+db.invoice.hasOne(db.payment, { foreignKey: 'invoiceId' });
+db.payment.belongsTo(db.invoice, { foreignKey: 'invoiceId' });
 
 module.exports = db;
