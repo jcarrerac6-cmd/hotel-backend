@@ -36,12 +36,16 @@ db.payment = require("./payment.model.js")(sequelize, Sequelize);
 
 // RELACIONES
 // Cliente -> Reservas
-db.client.hasMany(db.booking, { foreignKey: 'clientId' });
-db.booking.belongsTo(db.client, { foreignKey: 'clientId' });
+//db.client.hasMany(db.booking, { foreignKey: 'clientId' });
+//db.booking.belongsTo(db.client, { foreignKey: 'clientId' });
+db.client.hasMany(db.booking, { foreignKey: 'client_id' });
+db.booking.belongsTo(db.client, { foreignKey: 'client_id' });
 
 // Habitación -> Reservas
-db.room.hasMany(db.booking, { foreignKey: 'roomId' });
-db.booking.belongsTo(db.room, { foreignKey: 'roomId' });
+//db.room.hasMany(db.booking, { foreignKey: 'roomId' });
+//db.booking.belongsTo(db.room, { foreignKey: 'roomId' });
+db.room.hasMany(db.booking, { foreignKey: 'room_id' });
+db.booking.belongsTo(db.room, { foreignKey: 'room_id' });
 
 // Reserva -> Factura
 db.booking.hasOne(db.invoice, { foreignKey: 'bookingId' });
