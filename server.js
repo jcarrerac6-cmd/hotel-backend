@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
   res.json({ message: "API del Sistema de Hotel (UMG) lista y funcionando." });
 });
 
-// Carga directa de rutas
+// Carga de rutas
 require("./app/routes/client.routes.js")(app);
 require("./app/routes/employee.routes.js")(app);
 require("./app/routes/supplier.routes.js")(app);
@@ -28,27 +28,22 @@ require("./app/routes/auth.routes.js")(app);
 const db = require("./app/models");
 const PORT = process.env.PORT || 8080;
 
-// ELIMINAR TABLAS CONFLICTIVAS VÍA SQL DIRECTO Y RECREAR
-async function startServer() {
+async function resetAndStart() {
   try {
-    // Destruye completamente las tablas que causan conflicto
-    await db.sequelize.query('DROP TABLE IF EXISTS "payments" CASCADE;');
-    await db.sequelize.query('DROP TABLE IF EXISTS "invoice_details" CASCADE;');
-    await db.sequelize.query('DROP TABLE IF EXISTS "invoiceDetails" CASCADE;');
-    await db.sequelize.query('DROP TABLE IF EXISTS "invoices" CASCADE;');
-    await db.sequelize.query('DROP TABLE IF EXISTS "bookings" CASCADE;');
+    // Purga total de esquema en Neon DB
+    await db.sequelize.query('DROP SCHEMA public CASCADE;');
+    await db.sequelize.query('CREATE SCHEMA public;');
     
-    // Sincroniza y crea el esquema limpio coincidente con los modelos actuales
+    // Recreación limpia de todas las tablas
     await db.sequelize.sync({ force: true });
-    
-    console.log("¡TABLAS DESTRUIDAS Y RECREADAS CON ÉXITO!");
-    
+    console.log("¡ESQUEMA PURGADO Y RECREADO CORRECTAMENTE EN CAMELCASE!");
+
     app.listen(PORT, () => {
-      console.log(`Servidor listo en el puerto ${PORT}`);
+      console.log(`Servidor corriendo en el puerto ${PORT}`);
     });
   } catch (err) {
-    console.error("Error al recrear la base de datos:", err);
+    console.error("Error al iniciar el servidor:", err.message);
   }
 }
 
-startServer();
+resetAndStart();
